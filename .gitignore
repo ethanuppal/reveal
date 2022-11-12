@@ -5,6 +5,10 @@ package.json
 package-lock.json
 assets
 scripts
+fragments
 _index.html
+_about.html
 Makefile
 build.js
+build.sh
+.gitignore

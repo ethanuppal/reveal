@@ -1,0 +1,20 @@
+{
+    "description": "Ethan's list of resources for learning more about browser fingerprinting and more.",
+    "list": [
+        {
+            "name": "Fingerprinting",
+            "id": "fingerprinting",
+            "links": [
+                {
+                    "name": "Cover Your Tracks by the Electronic Frontier Foundation",
+                    "url": "https://www.eff.org/pages/cover-your-tracks"
+                }
+            ]
+        },
+        {
+            "name": "IP Address",
+            "id": "ip",
+            "links": []
+        }
+    ]
+}

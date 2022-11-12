@@ -1,0 +1,238 @@
+<!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="What does your browser reveal about you?">
+    </head>
+    <body>
+        <inject type="style" src="assets/style.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+:root {
+    --background-color: #D2D2CF;
+    --container-color: white;
+    --font-color: black;
+}
+
+body {
+    /* Font */
+    font-family: sans-serif;
+    font-size: 16px;
+
+    /* Color */
+    background-color: var(--background-color);
+}
+
+/* For phones */
+#container {
+    /* Position */
+    position: absolute;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+
+    /* Border and Padding */
+    padding: 15px 20px;
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    /* Color */
+    background-color: var(--container-color);
+    color: var(--font-color);
+}
+
+/* For computers */
+@media only screen and (min-width: 720px) {
+    #container {
+        /* Center */
+        max-width: 720px;
+        margin: 0 auto;
+    }
+}
+
+.fill-button {
+    width: 100%;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.fill-button:hover, .fill-button:active {
+    filter: brightness(80%);
+}
+
+.script {
+    display: none;
+}
+
+#footer {
+    font-size: 10px;
+}
+
+#footer .normal {
+    font-size: 16px;
+}
+
+object, iframe {
+    width: 100%;
+}
+
+.not-link {
+    color: var(--font-color)
+    text-decoration: none;
+}
+        </style>
+        <inject type="style" src="assets/resource.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+.resource-set {
+
+}
+
+.resource-title {
+    font-weight: bold;
+}
+        </style>
+        <inject type="script" src="scripts/urlparam.js">
+        </inject>
+        <script>
+            // https://stackoverflow.com/questions/19491336/how-to-get-url-parameter-using-jquery-or-plain-javascript
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return false;
+};
+        </script>
+        <title>
+            Reveal
+        </title>
+        <div id="container">
+            <inject type="div" src="fragments/title.html">
+            </inject>
+            <div>
+                <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+                <h1>
+                    Welcome to
+                    <a href="index.html" class="not-link">
+                        Reveal
+                    </a>
+                </h1>
+            </div>
+            <p>
+                Here, you'll find resources to learn about more about each piece of information as well as browser fingerprinting.
+                <a href="index.html">
+                    Click here to go to the main page
+                </a>
+                .
+            </p>
+            <p>
+                This page is a work-in-progress.
+            </p>
+            <div id="resource-sets">
+            </div>
+            <inject type="script" src="scripts/resources.js">
+            </inject>
+            <script>
+                // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+
+const resourceSetsDiv = document.getElementById('resource-sets');
+
+fetch('resources.json')
+    .then(response => response.text())
+    .then(data => {
+        const resources = JSON.parse(data).list;
+        loadWebsite(resources);
+        highlightResource();
+});
+
+function loadWebsite(resources) {
+    for (const resourceSet of resources) {
+        const resourceDiv = document.createElement('div');
+        resourceDiv.id = resourceSet.id;
+        resourceDiv.classList.add('resource-set');
+
+        const titleP = document.createElement('p');
+        titleP.classList.add('resource-title');
+        titleP.innerText = `${resourceSet.name}:`
+        resourceDiv.appendChild(titleP);
+
+        const linksUl = document.createElement('ul');
+        for (const link of resourceSet.links) {
+            const linkLi = document.createElement('li');
+            linkLi.innerHTML = `<a href="${link.url}">${link.name}</a>`;
+            linksUl.appendChild(linkLi);
+        }
+        resourceDiv.appendChild(linksUl);
+
+        resourceSetsDiv.appendChild(resourceDiv);
+    }
+}
+
+function highlightResource() {
+    const resourceSetID = getUrlParameter('learn');
+    if (resourceSetID) {
+        const resourceSet = document.getElementById(resourceSetID);
+        resourceSet.style.backgroundColor = '#FFFFCC';
+    }
+}
+            </script>
+            <noscript>
+                <p>I see you have JavaScript off. Although I applaud the decision, JavaScript needs to be enabled to load the resources.</p>
+                <p>Otherwise, you can look at the JSON source file <a href="resources.json" rel="nofollow">here</a>.</p>
+                <object data="resources.json">
+                    <iframe src="resources.json"></iframe>
+                </object>
+            </noscript>
+            <inject type="div" src="fragments/footer.html">
+            </inject>
+            <div>
+                <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+                <div id="footer">
+                    <hr>
+                    <div class="normal">
+                        <p>
+                            Check out my other projects!
+                        </p>
+                        <ul>
+                            <li>
+                                <a href="https://ethanuppal.github.io/transcribe">
+                                    Transcribe Web App
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/ethanuppal/machdump">
+                                    MachDump
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <p>
+                        Copyright (C) 2022 Ethan Uppal. All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

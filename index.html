@@ -86,6 +86,11 @@ body {
 object, iframe {
     width: 100%;
 }
+
+.not-link {
+    color: var(--font-color)
+    text-decoration: none;
+}
         </style>
         <inject type="style" src="assets/bit.css">
         </inject>
@@ -117,6 +122,15 @@ object, iframe {
 .bit-description {
     font-size: 12px;
 }
+
+.bit-fill-button {
+    background-color: var(--container-color);
+    filter: brightness(90%);
+}
+
+.bit-explain {
+    
+}
         </style>
         <inject type="script" src="scripts/show.js">
         </inject>
@@ -134,7 +148,7 @@ function showScriptOnElements() {
         <script>
             // Copyright (C) 2022 Ethan Uppal. All rights reserved.
 
-function addBit(name, content, description) {
+function addBit(name, content, description, learnMore) {
     const bitDiv = document.createElement('div');
     bitDiv.classList.add('bit');
 
@@ -165,6 +179,16 @@ function addBit(name, content, description) {
         descriptionP.classList.add('bit-description');
         descriptionP.innerText = description;
         bitDiv.appendChild(descriptionP);
+    }
+
+    if (learnMore) {
+        const learnMoreButton = document.createElement('button');
+        learnMoreButton.classList.add('fill-button');
+        learnMoreButton.classList.add('bit-fill-button');
+        learnMoreButton.onclick = function() {
+            window.open(learnMore);
+        }
+        bitDiv.appendChild(learnMoreButton);
     }
 
     const bitsDiv = document.getElementById('bits');
@@ -250,18 +274,13 @@ function addOtherBits() {
             value: `${screen.width} by ${screen.height}`,
         },
         {
-            name: 'Color and Pixel Depth',
-            value: `${screen.colorDepth}, ${screen.pixelDepth}`,
-            description: 'Surprisingly, these values can be used to identify browsers.'
-        },
-        {
             name: 'Threads',
             value: navigator.hardwareConcurrency,
-            description: 'Surprisingly, this value can be used to identify browsers.'
+            description: 'Surprisingly, this value can be used to identify you.'
         }
     ].forEach(bit => {
         if (bit.value) {
-            addBit(bit.name, { text: `${bit.value}` }, bit.description);
+            addBit(bit.name, { text: `${bit.value}` }, bit.description, bit.learn);
         }
     });
 }
@@ -280,7 +299,8 @@ function addBits() {
         <inject type="script" src="scripts/retry-bits.js">
         </inject>
         <script>
-            function retryBits() {
+            // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+function retryBits() {
     document.getElementById('bits').textContent = '';
     window.scrollTo(0, 0);
     fallbackBits();
@@ -290,9 +310,17 @@ function addBits() {
             Reveal
         </title>
         <div id="container">
-            <h1>
-                Welcome to Reveal
-            </h1>
+            <inject type="div" src="fragments/title.html">
+            </inject>
+            <div>
+                <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+                <h1>
+                    Welcome to
+                    <a href="index.html" class="not-link">
+                        Reveal
+                    </a>
+                </h1>
+            </div>
             <noscript>
                 <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
                 <object data="https://api.db-ip.com/v2/free/self">
@@ -303,6 +331,10 @@ function addBits() {
             <div class="script">
                 <p>
                     Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
+                    <a href="about.html#fingerprinting?learn=fingerprinting">
+                        Learn more about browser fingerprinting
+                    </a>
+                    .
                 </p>
                 <div id="bits">
                 </div>
@@ -324,27 +356,33 @@ function addBits() {
             <p>
                 If you see absolutely no text besides this sentence, you have probably disabled most of the exploitable HTML features.
             </p>
-            <div id="footer">
-                <div class="normal">
+            <inject type="div" src="fragments/footer.html">
+            </inject>
+            <div>
+                <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+                <div id="footer">
+                    <hr>
+                    <div class="normal">
+                        <p>
+                            Check out my other projects!
+                        </p>
+                        <ul>
+                            <li>
+                                <a href="https://ethanuppal.github.io/transcribe">
+                                    Transcribe Web App
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://github.com/ethanuppal/machdump">
+                                    MachDump
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                     <p>
-                        Check out my other projects!
+                        Copyright (C) 2022 Ethan Uppal. All rights reserved.
                     </p>
-                    <ul>
-                        <li>
-                            <a href="https://ethanuppal.github.io/transcribe">
-                                Transcribe Web App
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/ethanuppal/machdump">
-                                MachDump
-                            </a>
-                        </li>
-                    </ul>
                 </div>
-                <p>
-                    Copyright (C) 2022 Ethan Uppal. All rights reserved.
-                </p>
             </div>
         </div>
     </body>
