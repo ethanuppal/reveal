@@ -106,6 +106,7 @@ body {
    </h1>
    <noscript>
     <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
+                <iframe src="https://api.db-ip.com/v2/free/self"></iframe>
                 <p>Also, if you're seeing this message, that means you have <code>&lt;noscript&gt;</code> enabled, which can be exploited. You can use <a href="https://noscript.net/">NoScript</a> to gain more control over your browser.</p>
    </noscript>
    <div class="script">
@@ -174,10 +175,14 @@ function reqCallback() {
     }
     addOtherBits();
 }
-var req = new XMLHttpRequest();
-req.addEventListener('load', reqCallback);
-req.open('GET', 'https://api.db-ip.com/v2/free/self');
-req.send();
+try {
+    var req = new XMLHttpRequest();
+    req.addEventListener('load', reqCallback);
+    req.open('GET', 'https://api.db-ip.com/v2/free/self');
+    req.send();
+} catch (e) {
+
+}
 
 // Other stuff
 function addOtherBits() {
