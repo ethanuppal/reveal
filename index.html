@@ -1,15 +1,15 @@
 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
 <html lang="en" dir="ltr">
- <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="What does your browser reveal about you?">
- </head>
- <body>
-  <inject type="style" src="assets/style.css">
-  </inject>
-  <style>
-   /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="What does your browser reveal about you?">
+    </head>
+    <body>
+        <inject type="style" src="assets/style.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
 
 :root {
     --background-color: #D2D2CF;
@@ -54,6 +54,27 @@ body {
     }
 }
 
+.fill-button {
+    width: 100%;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.fill-button:hover, .fill-button:active {
+    filter: brightness(80%);
+}
+
+.script {
+    display: none;
+}
+
 #footer {
     font-size: 10px;
 }
@@ -62,14 +83,14 @@ body {
     font-size: 16px;
 }
 
-.script {
-    display: none;
+object, iframe {
+    width: 100%;
 }
-  </style>
-  <inject type="style" src="assets/bit.css">
-  </inject>
-  <style>
-   /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+        </style>
+        <inject type="style" src="assets/bit.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
 
 #bits {
 
@@ -96,33 +117,22 @@ body {
 .bit-description {
     font-size: 12px;
 }
-  </style>
-  <title>
-   Reveal
-  </title>
-  <div id="container">
-   <h1>
-    Welcome to Reveal
-   </h1>
-   <noscript>
-    <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
-                <iframe src="https://api.db-ip.com/v2/free/self"></iframe>
-                <p>Also, if you're seeing this message, that means you have <code>&lt;noscript&gt;</code> enabled, which can be exploited. You can use <a href="https://noscript.net/">NoScript</a> to gain more control over your browser.</p>
-   </noscript>
-   <div class="script">
-    <p>
-     Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
-    </p>
-    <div id="bits">
-    </div>
-    <p>
-     The techniques for browser fingerprinting are very advanced and this list is in no way complete. If you don't see anything, try refreshing the page. If that still doesn't work, let me know on GitHub.
-    </p>
-    <inject type="script" src="scripts/bits.js">
-    </inject>
-    <script>
-     // Copyright (C) 2022 Ethan Uppal. All rights reserved.
-const bitsDiv = document.getElementById('bits');
+        </style>
+        <inject type="script" src="scripts/show.js">
+        </inject>
+        <script>
+            // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+function showScriptOnElements() {
+    const elementsToShow = document.getElementsByClassName('script');
+    for (const elementToShow of elementsToShow) {
+        elementToShow.classList.remove('script');
+    }
+}
+        </script>
+        <inject type="script" src="scripts/bits.js">
+        </inject>
+        <script>
+            // Copyright (C) 2022 Ethan Uppal. All rights reserved.
 
 function addBit(name, content, description) {
     const bitDiv = document.createElement('div');
@@ -142,6 +152,9 @@ function addBit(name, content, description) {
         contentElem = document.createElement('p');
         contentElem.classList.add('bit-content bit-error');
         contentElem.innerText = content.error;
+    } else if ('frame' in content) {
+        contentElem = document.createElement('iframe');
+        contentElem.setAttribute('src', content.frame);
     } else {
         return;
     }
@@ -154,6 +167,7 @@ function addBit(name, content, description) {
         bitDiv.appendChild(descriptionP);
     }
 
+    const bitsDiv = document.getElementById('bits');
     bitsDiv.appendChild(bitDiv);
 }
 
@@ -166,22 +180,20 @@ function reqCallback() {
             { text: `${responseData.ipAddress} (${responseData.city} in ${responseData.countryName}, ${responseData.continentName})` },
             'Your IP address is often logged by websites to identify you and block access.'
         );
+        addOtherBits();
     } else {
-        addBit(
-            'IP Address',
-            { error: 'An error occured while determining IP address. This could be because you have blocked remote requests, in which case you have made the right decision.' },
-            'Your IP address is often logged by websites to identify you and block access.'
-        );
+        fallbackBits();
     }
-    addOtherBits();
 }
-try {
-    var req = new XMLHttpRequest();
-    req.addEventListener('load', reqCallback);
-    req.open('GET', 'https://api.db-ip.com/v2/free/self');
-    req.send();
-} catch (e) {
 
+// Fallback method
+function fallbackBits() {
+    addBit(
+        'IP Address',
+        { frame: 'https://api.db-ip.com/v2/free/self' },
+        'Your IP address is often logged by websites to identify you and block access.'
+    );
+    addOtherBits();
 }
 
 // Other stuff
@@ -253,39 +265,87 @@ function addOtherBits() {
         }
     });
 }
-    </script>
-   </div>
-   <div id="footer">
-    <div class="normal">
-     <p>
-      Check out my other projects!
-     </p>
-     <ul>
-      <li>
-       <a href="https://ethanuppal.github.io/transcribe">
-        Transcribe Web App
-       </a>
-      </li>
-      <li>
-       <a href="https://github.com/ethanuppal/machdump">
-        MachDump
-       </a>
-      </li>
-     </ul>
-    </div>
-    <p>
-     Copyright (C) 2022 Ethan Uppal. All rights reserved.
-    </p>
-   </div>
-  </div>
-  <inject type="script" src="scripts/show.js">
-  </inject>
-  <script>
-   // Copyright (C) 2022 Ethan Uppal. All rights reserved.
-const elementsToShow = document.getElementsByClassName('script');
-for (const elementToShow of elementsToShow) {
-    elementToShow.classList.remove('script');
+
+function addBits() {
+    try {
+        var req = new XMLHttpRequest();
+        req.addEventListener('load', reqCallback);
+        req.open('GET', 'https://api.db-ip.com/v2/free/self');
+        req.send();
+    } catch (e) {
+        fallbackBits();
+    }
 }
-  </script>
- </body>
+        </script>
+        <inject type="script" src="scripts/retry-bits.js">
+        </inject>
+        <script>
+            function retryBits() {
+    document.getElementById('bits').textContent = '';
+    window.scrollTo(0, 0);
+    fallbackBits();
+}
+        </script>
+        <title>
+            Reveal
+        </title>
+        <div id="container">
+            <h1>
+                Welcome to Reveal
+            </h1>
+            <noscript>
+                <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
+                <object data="https://api.db-ip.com/v2/free/self">
+                    <iframe src="https://api.db-ip.com/v2/free/self"></iframe>
+                </object>
+                <p>Also, if you're seeing this message, that means you have <code>&lt;noscript&gt;</code> enabled, which can be exploited. You can use <a href="https://noscript.net/">NoScript</a> to gain more control over your browser.</p>
+            </noscript>
+            <div class="script">
+                <p>
+                    Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
+                </p>
+                <div id="bits">
+                </div>
+                <p id="fix-messsage">
+                    If you don't see anything, try refreshing the page. If that still doesn't work, please
+                    <a href="https://github.com/ethanuppal/reveal/issues/new?title=Nothing+is+showing+up&labels=bug" rel="nofollow noreferrer" target="_blank">
+                        let me know on GitHub
+                    </a>
+                    . You can also try this button:
+                </p>
+                <button class="fill-button" onclick="retryBits();">
+                    Attempt Fix
+                </button>
+                <script>
+                    showScriptOnElements();
+                    addBits();
+                </script>
+            </div>
+            <p>
+                If you see absolutely no text besides this sentence, you have probably disabled most of the exploitable HTML features.
+            </p>
+            <div id="footer">
+                <div class="normal">
+                    <p>
+                        Check out my other projects!
+                    </p>
+                    <ul>
+                        <li>
+                            <a href="https://ethanuppal.github.io/transcribe">
+                                Transcribe Web App
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/ethanuppal/machdump">
+                                MachDump
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <p>
+                    Copyright (C) 2022 Ethan Uppal. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </body>
 </html>
