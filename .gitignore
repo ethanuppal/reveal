@@ -1,0 +1,10 @@
+# Copyright (C) 2022 Ethan Uppal. All rights reserved.
+.DS_Store
+node_modules
+package.json
+package-lock.json
+assets
+scripts
+_index.html
+Makefile
+build.js

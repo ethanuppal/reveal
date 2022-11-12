@@ -1,0 +1,243 @@
+<!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+<html lang="en" dir="ltr">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ </head>
+ <body>
+  <inject type="style" src="assets/style.css">
+  </inject>
+  <style>
+   /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+:root {
+    --background-color: #D2D2CF;
+    --container-color: white;
+    --font-color: black;
+}
+
+body {
+    /* Font */
+    font-family: sans-serif;
+    font-size: 16px;
+
+    /* Color */
+    background-color: var(--background-color);
+}
+
+/* For phones */
+#container {
+    /* Position */
+    position: absolute;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+
+    /* Border and Padding */
+    padding: 15px 20px;
+    top: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    /* Color */
+    background-color: var(--container-color);
+    color: var(--font-color);
+}
+
+/* For computers */
+@media only screen and (min-width: 720px) {
+    #container {
+        /* Center */
+        max-width: 720px;
+        margin: 0 auto;
+    }
+}
+
+#footer p {
+    font-size: 10px;
+}
+
+.script {
+    display: none;
+}
+  </style>
+  <inject type="style" src="assets/bit.css">
+  </inject>
+  <style>
+   /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+#bits {
+
+}
+
+.bit {
+    background-color: #E0E0E0;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.bit-name {
+    font-weight: bold;
+}
+
+.bit-content {
+
+}
+
+.bit-error {
+    color: red;
+}
+
+.bit-description {
+    font-size: 12px;
+}
+  </style>
+  <title>
+   Reveal
+  </title>
+  <div id="container">
+   <h1>
+    Welcome to Reveal
+   </h1>
+   <noscript>
+    <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
+                <p>Also, if you're seeing this message, that means you have <code>&lt;noscript&gt;</code> enabled, which can be exploited. You can use <a href="https://noscript.net/">NoScript</a> to gain more control over your browser.</p>
+   </noscript>
+   <div class="script">
+    <p>
+     Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
+    </p>
+    <div id="bits">
+    </div>
+    <p>
+     The techniques for browser fingerprinting are very advanced and this list is in no way complete.
+    </p>
+    <inject type="script" src="scripts/bits.js">
+    </inject>
+    <script>
+     // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+const bitsDiv = document.getElementById('bits');
+
+function addBit(name, content, description) {
+    const bitDiv = document.createElement('div');
+    bitDiv.classList.add('bit');
+
+    const nameP = document.createElement('p');
+    nameP.classList.add('bit-name');
+    nameP.innerText = name;
+    bitDiv.appendChild(nameP);
+
+    var contentElem;
+    if ('text' in content) {
+        contentElem = document.createElement('p');
+        contentElem.classList.add('bit-content');
+        contentElem.innerText = content.text;
+    } else if ('error' in content) {
+        contentElem = document.createElement('p');
+        contentElem.classList.add('bit-content bit-error');
+        contentElem.innerText = content.error;
+    } else {
+        return;
+    }
+    bitDiv.appendChild(contentElem);
+
+    if (description) {
+        const descriptionP = document.createElement('p');
+        descriptionP.classList.add('bit-description');
+        descriptionP.innerText = description;
+        bitDiv.appendChild(descriptionP);
+    }
+
+    bitsDiv.appendChild(bitDiv);
+}
+
+// IP Address
+function reqCallback() {
+    if (this.status == 200) {
+        const responseData = JSON.parse(this.responseText);
+        addBit(
+            'IP Address',
+            { text: `${responseData.ipAddress} (${responseData.city} in ${responseData.countryName}, ${responseData.continentName})` },
+            'Your IP address is often logged by websites to identify you and block access.'
+        );
+    } else {
+        addBit(
+            'IP Address',
+            { error: 'An error occured while determining IP address. This could be because you have blocked remote requests, in which case you have made the right decision.' },
+            'Your IP address is often logged by websites to identify you and block access.'
+        );
+    }
+    addOtherBits();
+}
+var req = new XMLHttpRequest();
+req.addEventListener('load', reqCallback);
+req.open('GET', 'https://api.db-ip.com/v2/free/self');
+req.send();
+
+// Other stuff
+function addOtherBits() {
+    [
+        {
+            name: 'Vendor',
+            value: navigator.vendor
+        },
+        {
+            name: 'Platform',
+            value: navigator.platform
+        },
+        {
+            name: 'Main Language',
+            value: navigator.language
+        },
+        {
+            name: 'User Agent',
+            value: navigator.userAgent,
+            description: "Don't be fooled! This piece of data has an extremely weird format, but it can reveal quite a bit about your browser."
+        },
+        {
+            name: 'Touchscreen?',
+            value: (navigator.maxTouchPoints > 0) ? 'Yes' : 'No'
+        },
+        {
+            name: 'Cookies Enabled?',
+            value: (navigator.cookieEnabled > 0) ? 'Yes' : 'No'
+        },
+        {
+            name: 'Dimensions',
+            value: `${screen.width} by ${screen.height}`,
+        },
+        {
+            name: 'Color and Pixel Depth',
+            value: `${screen.colorDepth}, ${screen.pixelDepth}`,
+            description: 'Surprisingly, these values can be used to identify browsers.'
+        },
+        {
+            name: 'Threads',
+            value: navigator.hardwareConcurrency,
+            description: 'Surprisingly, this value can be used to identify browsers.'
+        }
+    ].forEach(bit => {
+        if (bit.value) {
+            addBit(bit.name, { text: `${bit.value}` }, bit.description);
+        }
+    });
+}
+    </script>
+   </div>
+   <div id="footer">
+    <p>
+     Copyright (C) 2022 Ethan Uppal. All rights reserved.
+    </p>
+   </div>
+  </div>
+  <inject type="script" src="scripts/show.js">
+  </inject>
+  <script>
+   // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+const elementsToShow = document.getElementsByClassName('script');
+for (const elementToShow of elementsToShow) {
+    elementToShow.classList.remove('script');
+}
+  </script>
+ </body>
+</html>
