@@ -14,7 +14,30 @@
         {
             "name": "IP Address",
             "id": "ip",
-            "links": []
+            "links": [
+                {
+                    "name": "IP addresses by KhanAcademy",
+                    "url": "https://www.khanacademy.org/computing/computers-and-internet/xcae6f4a7ff015e7d:the-internet/xcae6f4a7ff015e7d:addressing-the-internet/a/ip-v4-v6-addresses"
+                },
+                {
+                    "name": "IP addresses and DNA by KhanAcademy",
+                    "url": "https://www.khanacademy.org/computing/code-org/computers-and-the-internet/internet-works/v/the-internet-ip-addresses-and-dns"
+                }
+            ]
+        },
+        {
+            "name": "User Agent",
+            "id": "ua",
+            "links": [
+                {
+                    "name": "Navigator.userAgent Reference",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/userAgent"
+                },
+                {
+                    "name": "Browser detection using the user agent",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent"
+                }
+            ]
         }
     ]
 }

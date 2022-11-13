@@ -141,12 +141,22 @@ var getUrlParameter = function getUrlParameter(sParam) {
                 </h1>
             </div>
             <p>
-                Here, you'll find resources to learn about more about each piece of information as well as browser fingerprinting.
-                <a href="index.html">
-                    Click here to go to the main page
+                Here, you'll find resources to learn about more about browser fingerprinting.
+                <a id="close-button" onclick="maybeClose();" href="index.html">
+                    Go to the main page
                 </a>
                 .
             </p>
+            <script>
+                var closeButtonLink = document.getElementById('close-button');
+                var maybeClose = function(){};
+                if (getUrlParameter('learn')) {
+                    closeButtonLink.innerText = 'Return to the main page';
+                    maybeClose = () => {
+                        window.close('', '_parent', '');
+                    }
+                }
+            </script>
             <p>
                 This page is a work-in-progress.
             </p>
@@ -195,6 +205,7 @@ function highlightResource() {
     if (resourceSetID) {
         const resourceSet = document.getElementById(resourceSetID);
         resourceSet.style.backgroundColor = '#FFFFCC';
+        resourceSet.scrollIntoView();
     }
 }
             </script>

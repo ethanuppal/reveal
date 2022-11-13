@@ -125,11 +125,15 @@ object, iframe {
 
 .bit-fill-button {
     background-color: var(--container-color);
-    filter: brightness(90%);
+    filter: brightness(75%);
+}
+
+.bit-fill-button:hover, .bit-fill-button:active {
+    filter: brightness(55%);
 }
 
 .bit-explain {
-    
+
 }
         </style>
         <inject type="script" src="scripts/show.js">
@@ -185,8 +189,9 @@ function addBit(name, content, description, learnMore) {
         const learnMoreButton = document.createElement('button');
         learnMoreButton.classList.add('fill-button');
         learnMoreButton.classList.add('bit-fill-button');
+        learnMoreButton.innerText = 'Learn More';
         learnMoreButton.onclick = function() {
-            window.open(learnMore);
+            window.open(`about.html?learn=${learnMore}`);
         }
         bitDiv.appendChild(learnMoreButton);
     }
@@ -202,7 +207,8 @@ function reqCallback() {
         addBit(
             'IP Address',
             { text: `${responseData.ipAddress} (${responseData.city} in ${responseData.countryName}, ${responseData.continentName})` },
-            'Your IP address is often logged by websites to identify you and block access.'
+            'Your IP address is often logged by websites to identify you and block access.',
+            'ip'
         );
         addOtherBits();
     } else {
@@ -215,7 +221,8 @@ function fallbackBits() {
     addBit(
         'IP Address',
         { frame: 'https://api.db-ip.com/v2/free/self' },
-        'Your IP address is often logged by websites to identify you and block access.'
+        'Your IP address is often logged by websites to identify you and block access.',
+        'ip'
     );
     addOtherBits();
 }
@@ -238,7 +245,8 @@ function addOtherBits() {
         {
             name: 'User Agent',
             value: navigator.userAgent,
-            description: "Don't be fooled! This piece of data has an extremely weird format, but it can reveal quite a bit about your browser."
+            description: "Don't be fooled! This piece of data has an extremely weird format, but it can reveal quite a bit about your browser.",
+            learn: 'ua'
         },
         {
             name: 'Touchscreen?',
@@ -331,7 +339,7 @@ function retryBits() {
             <div class="script">
                 <p>
                     Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
-                    <a href="about.html#fingerprinting?learn=fingerprinting">
+                    <a href="about.html?learn=fingerprinting">
                         Learn more about browser fingerprinting
                     </a>
                     .
