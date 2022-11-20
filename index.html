@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="So you think you're private online?">
+        <script src="https://kit.fontawesome.com/556eaabc59.js" crossorigin="anonymous">
+        </script>
     </head>
     <body>
         <inject type="style" src="assets/style.css">
@@ -54,6 +56,10 @@ body {
     }
 }
 
+.page-subtitle {
+    color: gray;
+}
+
 .fill-button {
     width: 100%;
     border: none;
@@ -67,7 +73,7 @@ body {
     cursor: pointer;
 }
 
-.fill-button:hover, .fill-button:active {
+.fill-button:hover {
     filter: brightness(80%);
 }
 
@@ -193,6 +199,13 @@ function addBit(name, content, description, learnMore) {
         learnMoreButton.onclick = function() {
             window.open(`about.html?learn=${learnMore}`);
         }
+
+        const newPageIcon = document.createElement('i');
+        newPageIcon.classList.add('fa-solid');
+        newPageIcon.classList.add('fa-arrow-up-right-from-square');
+        newPageIcon.style.marginLeft = '5px';
+        learnMoreButton.appendChild(newPageIcon);
+
         bitDiv.appendChild(learnMoreButton);
     }
 
@@ -231,7 +244,7 @@ function fallbackBits() {
 function addOtherBits() {
     [
         {
-            name: 'Vendor',
+            name: 'Browser Vendor',
             value: navigator.vendor
         },
         {
@@ -284,7 +297,8 @@ function addOtherBits() {
         {
             name: 'Threads',
             value: navigator.hardwareConcurrency,
-            description: 'Surprisingly, this value can be used to identify you.'
+            description: 'Surprisingly, this value can be used to identify you.',
+            learn: 'threads'
         }
     ].forEach(bit => {
         if (bit.value) {
@@ -322,12 +336,31 @@ function retryBits() {
             </inject>
             <div>
                 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
-                <h1>
-                    Welcome to
-                    <a href="index.html" class="not-link">
-                        Reveal
-                    </a>
-                </h1>
+                <div class="row">
+                    <h1>
+                        Welcome to
+                        <a href="index.html" class="not-link">
+                            Reveal
+                        </a>
+                    </h1>
+                    <!-- <button id="copy-link" style="margin-left: 5px; visibility: hidden;" onclick="copyPageLink();">
+        <i class="fa-solid fa-link"></i>
+    </button>
+    <script>
+        document.getElementById('copy-link').style.visibility = 'visible';
+        function copyPageLink() {
+            navigator.clipboard.writeText(window.href).then(
+                () => {
+
+                },
+                error => {
+                    error = error || 'No error explanation received.'
+                    alert(`Could not copy to clipboard for the following reason: ${error}`);
+                }
+            );
+        }
+    </script> -->
+                </div>
             </div>
             <noscript>
                 <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>

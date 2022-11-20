@@ -38,6 +38,25 @@
                     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent"
                 }
             ]
+        },
+        {
+            "name": "Threads",
+            "id": "threads",
+            "terms": ["computing thread", "cpu core", "multithreading", "parallel processing"],
+            "links": [
+                {
+                    "name": "Navigator.hardwareConcurrency Reference",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/hardwareConcurrency"
+                },
+                {
+                    "name": "Microsoft article on threading",
+                    "url": "https://learn.microsoft.com/en-us/dotnet/standard/threading/threads-and-threading"
+                },
+                {
+                    "name": "\"software threads vs hardware threads\" on StackOverflow",
+                    "url": "https://stackoverflow.com/questions/5593328/software-threads-vs-hardware-threads"
+                }
+            ]
         }
     ]
 }

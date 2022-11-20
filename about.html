@@ -4,6 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="So you think you're private online?">
+        <script src="https://kit.fontawesome.com/556eaabc59.js" crossorigin="anonymous">
+        </script>
     </head>
     <body>
         <inject type="style" src="assets/style.css">
@@ -54,6 +56,10 @@ body {
     }
 }
 
+.page-subtitle {
+    color: gray;
+}
+
 .fill-button {
     width: 100%;
     border: none;
@@ -67,7 +73,7 @@ body {
     cursor: pointer;
 }
 
-.fill-button:hover, .fill-button:active {
+.fill-button:hover {
     filter: brightness(80%);
 }
 
@@ -133,20 +139,38 @@ var getUrlParameter = function getUrlParameter(sParam) {
             </inject>
             <div>
                 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
-                <h1>
-                    Welcome to
-                    <a href="index.html" class="not-link">
-                        Reveal
-                    </a>
-                </h1>
+                <div class="row">
+                    <h1>
+                        Welcome to
+                        <a href="index.html" class="not-link">
+                            Reveal
+                        </a>
+                    </h1>
+                    <!-- <button id="copy-link" style="margin-left: 5px; visibility: hidden;" onclick="copyPageLink();">
+        <i class="fa-solid fa-link"></i>
+    </button>
+    <script>
+        document.getElementById('copy-link').style.visibility = 'visible';
+        function copyPageLink() {
+            navigator.clipboard.writeText(window.href).then(
+                () => {
+
+                },
+                error => {
+                    error = error || 'No error explanation received.'
+                    alert(`Could not copy to clipboard for the following reason: ${error}`);
+                }
+            );
+        }
+    </script> -->
+                </div>
             </div>
-            <p>
-                Here, you'll find resources to learn about more about browser fingerprinting.
-                <a id="close-button" onclick="maybeClose();" href="index.html">
-                    Go to the main page
-                </a>
-                .
-            </p>
+            <!-- <h2 style="page-subtitle">Resources</h2> -->
+            <a id="close-button" onclick="maybeClose();" href="index.html">
+                <i class="fa-solid fa-circle-caret-left">
+                </i>
+                Return to main page
+            </a>
             <script>
                 var closeButtonLink = document.getElementById('close-button');
                 var maybeClose = function(){};
@@ -157,6 +181,9 @@ var getUrlParameter = function getUrlParameter(sParam) {
                     }
                 }
             </script>
+            <p>
+                Here, you'll find resources to learn about more about browser fingerprinting.
+            </p>
             <p>
                 This page is a work-in-progress.
             </p>
@@ -193,6 +220,23 @@ function loadWebsite(resources) {
             const linkLi = document.createElement('li');
             linkLi.innerHTML = `<a href="${link.url}">${link.name}</a>`;
             linksUl.appendChild(linkLi);
+        }
+        if ('terms' in resourceSet) {
+            const termsP = document.createElement('p');
+            termsP.innerText = 'Search terms: '
+            for (var i = 0; i < resourceSet.terms.length; i++) {
+                const termA = document.createElement('a');
+                if (i > 0) {
+                    const commaSpan = document.createElement('span');
+                    commaSpan.innerText = ', ';
+                    termsP.appendChild(commaSpan);
+                }
+                const term = resourceSet.terms[i];
+                termA.innerText = term;
+                termA.href = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
+                termsP.appendChild(termA);
+            }
+            linksUl.appendChild(termsP);
         }
         resourceDiv.appendChild(linksUl);
 
