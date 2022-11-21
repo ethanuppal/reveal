@@ -60,23 +60,6 @@ body {
     color: gray;
 }
 
-.fill-button {
-    width: 100%;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    padding: 10px 20px;
-    background-color: var(--background-color);
-    cursor: pointer;
-}
-
-.fill-button:hover {
-    filter: brightness(80%);
-}
-
 .script {
     display: none;
 }
@@ -94,8 +77,41 @@ object, iframe {
 }
 
 .not-link {
-    color: var(--font-color)
+    color: var(--font-color);
     text-decoration: none;
+}
+        </style>
+        <inject type="style" src="assets/button.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+.fill-button {
+    width: 100%;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.link-button {
+    color: var(--font-color);
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.fill-button:hover, .link-button:hover {
+    filter: brightness(80%);
 }
         </style>
         <inject type="style" src="assets/bit.css">
@@ -337,12 +353,11 @@ function retryBits() {
             <div>
                 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
                 <div class="row">
-                    <h1>
-                        Welcome to
-                        <a href="index.html" class="not-link">
-                            Reveal
-                        </a>
-                    </h1>
+                    <a href="index.html" class="not-link">
+                        <h1>
+                            Welcome to Reveal
+                        </h1>
+                    </a>
                     <!-- <button id="copy-link" style="margin-left: 5px; visibility: hidden;" onclick="copyPageLink();">
         <i class="fa-solid fa-link"></i>
     </button>
@@ -364,19 +379,35 @@ function retryBits() {
             </div>
             <noscript>
                 <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
+                <inject type="div" src="fragments/to-about-button.html"></inject><div><!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+<a class="link-button" href="about.html?learn=fingerprinting" target="_blank" rel="nofollow">
+    Learn more about browser fingerprinting
+    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+</div>
                 <object data="https://api.db-ip.com/v2/free/self">
                     <iframe src="https://api.db-ip.com/v2/free/self"></iframe>
                 </object>
                 <p>Also, if you're seeing this message, that means you have <code>&lt;noscript&gt;</code> enabled, which can be exploited. You can use <a href="https://noscript.net/">NoScript</a> to gain more control over your browser.</p>
             </noscript>
             <div class="script">
-                <p>
-                    Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
-                    <a href="about.html?learn=fingerprinting">
-                        Learn more about browser fingerprinting
-                    </a>
-                    .
-                </p>
+                <div>
+                    <p>
+                        Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
+                    </p>
+                    <inject type="div" src="fragments/to-about-button.html">
+                    </inject>
+                    <div>
+                        <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+                        <a class="link-button" href="about.html?learn=fingerprinting" target="_blank" rel="nofollow">
+                            Learn more about browser fingerprinting
+                            <i class="fa-solid fa-arrow-up-right-from-square">
+                            </i>
+                        </a>
+                    </div>
+                    <p>
+                    </p>
+                </div>
                 <div id="bits">
                 </div>
                 <p id="fix-messsage">

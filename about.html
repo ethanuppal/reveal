@@ -60,23 +60,6 @@ body {
     color: gray;
 }
 
-.fill-button {
-    width: 100%;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    padding: 10px 20px;
-    background-color: var(--background-color);
-    cursor: pointer;
-}
-
-.fill-button:hover {
-    filter: brightness(80%);
-}
-
 .script {
     display: none;
 }
@@ -94,8 +77,41 @@ object, iframe {
 }
 
 .not-link {
-    color: var(--font-color)
+    color: var(--font-color);
     text-decoration: none;
+}
+        </style>
+        <inject type="style" src="assets/button.css">
+        </inject>
+        <style>
+            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
+
+.fill-button {
+    width: 100%;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.link-button {
+    color: var(--font-color);
+    text-decoration: none;
+    border: none;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+.fill-button:hover, .link-button:hover {
+    filter: brightness(80%);
 }
         </style>
         <inject type="style" src="assets/resource.css">
@@ -140,12 +156,11 @@ var getUrlParameter = function getUrlParameter(sParam) {
             <div>
                 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
                 <div class="row">
-                    <h1>
-                        Welcome to
-                        <a href="index.html" class="not-link">
-                            Reveal
-                        </a>
-                    </h1>
+                    <a href="index.html" class="not-link">
+                        <h1>
+                            Welcome to Reveal
+                        </h1>
+                    </a>
                     <!-- <button id="copy-link" style="margin-left: 5px; visibility: hidden;" onclick="copyPageLink();">
         <i class="fa-solid fa-link"></i>
     </button>
@@ -166,16 +181,15 @@ var getUrlParameter = function getUrlParameter(sParam) {
                 </div>
             </div>
             <!-- <h2 style="page-subtitle">Resources</h2> -->
-            <a id="close-button" onclick="maybeClose();" href="index.html">
-                <i class="fa-solid fa-circle-caret-left">
+            <a id="close-button" class="link-button" onclick="maybeClose();" href="index.html">
+                <i class="fa-solid fa-circle-chevron-left">
                 </i>
-                Return to main page
+                Return to the main page
             </a>
             <script>
                 var closeButtonLink = document.getElementById('close-button');
                 var maybeClose = function(){};
                 if (getUrlParameter('learn')) {
-                    closeButtonLink.innerText = 'Return to the main page';
                     maybeClose = () => {
                         window.close('', '_parent', '');
                     }
@@ -218,7 +232,17 @@ function loadWebsite(resources) {
         const linksUl = document.createElement('ul');
         for (const link of resourceSet.links) {
             const linkLi = document.createElement('li');
-            linkLi.innerHTML = `<a href="${link.url}">${link.name}</a>`;
+            const linkA = document.createElement('a');
+            linkA.href = link.url;
+            linkA.innerText = 'name' in link ? link.name : link.url;
+            linkLi.appendChild(linkA);
+
+            if ('quote' in link) {
+                const quoteSpan = document.createElement('span');
+                quoteSpan.innerText = ` ("${link.quote}")`;
+                linkLi.appendChild(quoteSpan);
+            }
+
             linksUl.appendChild(linkLi);
         }
         if ('terms' in resourceSet) {
