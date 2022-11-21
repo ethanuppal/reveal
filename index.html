@@ -1,6 +1,10 @@
+<!-- This file was automatically built. -->
 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
 <html lang="en" dir="ltr">
     <head>
+        <title>
+            Reveal
+        </title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="So you think you're private online?">
@@ -80,6 +84,11 @@ object, iframe {
     color: var(--font-color);
     text-decoration: none;
 }
+
+.copy-link {
+    background-color: brightness(80%);
+    text-decoration: underline;
+}
         </style>
         <inject type="style" src="assets/button.css">
         </inject>
@@ -108,11 +117,14 @@ object, iframe {
     padding: 5px 10px;
     background-color: var(--background-color);
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .fill-button:hover, .link-button:hover {
     filter: brightness(80%);
 }
+
+.link-button:visited {}
         </style>
         <inject type="style" src="assets/bit.css">
         </inject>
@@ -162,10 +174,10 @@ object, iframe {
         </inject>
         <script>
             // Copyright (C) 2022 Ethan Uppal. All rights reserved.
-function showScriptOnElements() {
-    const elementsToShow = document.getElementsByClassName('script');
-    for (const elementToShow of elementsToShow) {
-        elementToShow.classList.remove('script');
+function showElements(className) {
+    const elementsToShow = Array.from(document.getElementsByClassName(className));
+    for (var elementToShow of elementsToShow) {
+        elementToShow.classList.remove(className);
     }
 }
         </script>
@@ -258,10 +270,27 @@ function fallbackBits() {
 
 // Other stuff
 function addOtherBits() {
+    if ('getBattery' in navigator) {
+        navigator.getBattery().then((battery) => {
+            addBit(
+                'Battery Percent',
+                { text: `${battery.level} (${battery.charging ? 'plugged in' : 'not plugged in'})`},
+                'battery'
+            );
+        }).finally(() => {
+            addStaticBits();
+        });
+    } else {
+        addStaticBits();
+    }
+}
+
+function addStaticBits() {
     [
         {
             name: 'Browser Vendor',
-            value: navigator.vendor
+            value: navigator.vendor,
+            description: "This attribute is set to be deprecated."
         },
         {
             name: 'Platform',
@@ -274,7 +303,7 @@ function addOtherBits() {
         {
             name: 'User Agent',
             value: navigator.userAgent,
-            description: "Don't be fooled! This piece of data has an extremely weird format, but it can reveal quite a bit about your browser.",
+            description: "Don't be fooled! This piece of data has an extremely weird format, but it can reveal quite a bit about your browser. Thankfully, it is soon going out of use.",
             learn: 'ua'
         },
         {
@@ -292,19 +321,20 @@ function addOtherBits() {
         },
         {
             name: 'Cookies Enabled?',
-            value: (navigator.cookieEnabled > 0) ? 'Yes' : 'No'
+            value: (navigator.cookieEnabled > 0) ? 'Yes' : 'No',
+            description: 'Cookies allow websites to store data on your computer to remember login sessions and track you.',
+            learn: 'cookies'
         },
         {
             name: 'Plugins',
-            value: ('plugins' in navigator) ? Array.from(navigator.plugins).map(plugin => plugin.name).join(', ') : null
-        },
-        {
-            name: 'Location Bar',
-            value: ('locationbar' in window &&  window.locationbar.visible) ? 'Visible' : null
-        },
-        {
-            name: 'Menu Bar',
-            value: ('menubar' in window &&  window.menubar.visible) ? 'Visible' : null
+            value: (('plugins' in navigator)
+                ? Array.from(navigator.plugins).map(plugin => plugin.name).join(', ')
+                : (
+                    ('pdfViewerEnabled' in navigator)
+                        ? 'PDF Viewer'
+                        : 'No PDF plugin found: cannot view PDFs in browser'
+                )),
+            learn: 'plugin'
         },
         {
             name: 'Dimensions',
@@ -344,9 +374,6 @@ function retryBits() {
     fallbackBits();
 }
         </script>
-        <title>
-            Reveal
-        </title>
         <div id="container">
             <inject type="div" src="fragments/title.html">
             </inject>
@@ -379,9 +406,13 @@ function retryBits() {
             </div>
             <noscript>
                 <p>Congratulations! You have JavaScript disabled, which defends against many tracking techniques. However, the server may still receive your IP address and other request data such as browser information, the link you visited, and the link you came from. Enable JavaScript to see what would have been exposed had you left it on.</p>
-                <inject type="div" src="fragments/to-about-button.html"></inject><div><!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
-<a class="link-button" href="about.html?learn=fingerprinting" target="_blank" rel="nofollow">
+                <inject type="div" src="fragments/to-other-pages.html" replace="?learn=fingerprinting" with="?learn=_"></inject><div><!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
+<a class="link-button" href="about.html?learn=_" target="_blank" rel="nofollow">
     Learn more about browser fingerprinting
+    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+</a>
+<a class="link-button" href="private.html?type=1&amp;from=index" target="_blank" rel="nofollow">
+    See if you're in private browsing mode
     <i class="fa-solid fa-arrow-up-right-from-square"></i>
 </a>
 </div>
@@ -395,12 +426,17 @@ function retryBits() {
                     <p>
                         Have you ever wondered what you unwillingly expose to every website you visit? Reveal shows you a few bits of information that a website can easily obtain about you.
                     </p>
-                    <inject type="div" src="fragments/to-about-button.html">
+                    <inject type="div" src="fragments/to-other-pages.html">
                     </inject>
                     <div>
                         <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
                         <a class="link-button" href="about.html?learn=fingerprinting" target="_blank" rel="nofollow">
                             Learn more about browser fingerprinting
+                            <i class="fa-solid fa-arrow-up-right-from-square">
+                            </i>
+                        </a>
+                        <a class="link-button" href="private.html?type=1&from=index" target="_blank" rel="nofollow">
+                            See if you're in private browsing mode
                             <i class="fa-solid fa-arrow-up-right-from-square">
                             </i>
                         </a>
@@ -421,7 +457,7 @@ function retryBits() {
                     Attempt Fix
                 </button>
                 <script>
-                    showScriptOnElements();
+                    showElements('script');
                     addBits();
                 </script>
             </div>

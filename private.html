@@ -10,6 +10,9 @@
         <meta name="description" content="So you think you're private online?">
         <script src="https://kit.fontawesome.com/556eaabc59.js" crossorigin="anonymous">
         </script>
+        <style>
+            .type1, .type2, .hide1 { display: none; }
+        </style>
     </head>
     <body>
         <inject type="style" src="assets/style.css">
@@ -126,19 +129,17 @@ object, iframe {
 
 .link-button:visited {}
         </style>
-        <inject type="style" src="assets/resource.css">
+        <inject type="script" src="scripts/show.js">
         </inject>
-        <style>
-            /* Copyright (C) 2022 Ethan Uppal. All rights reserved. */
-
-.resource-set {
-
+        <script>
+            // Copyright (C) 2022 Ethan Uppal. All rights reserved.
+function showElements(className) {
+    const elementsToShow = Array.from(document.getElementsByClassName(className));
+    for (var elementToShow of elementsToShow) {
+        elementToShow.classList.remove(className);
+    }
 }
-
-.resource-title {
-    font-weight: bold;
-}
-        </style>
+        </script>
         <inject type="script" src="scripts/urlparam.js">
         </inject>
         <script>
@@ -189,7 +190,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
     </script> -->
                 </div>
             </div>
-            <inject type="div" src="fragments/back-home.html" replace="IF_OPENED_BY_MAIN" with="getUrlParameter('learn')">
+            <inject type="div" src="fragments/back-home.html" replace="IF_OPENED_BY_MAIN" with="getUrlParameter('from') == 'index'">
             </inject>
             <div>
                 <!-- Copyright (C) 2022 Ethan Uppal. All rights reserved. -->
@@ -201,102 +202,125 @@ var getUrlParameter = function getUrlParameter(sParam) {
                 <script>
                     var closeButtonLink = document.getElementById('close-button');
     var maybeClose = function(){};
-    if (getUrlParameter('learn')) {
+    if (getUrlParameter('from') == 'index') {
         maybeClose = () => {
             window.close('', '_parent', '');
         }
     }
                 </script>
             </div>
-            <p>
-                Here, you'll find resources to learn about more about browser fingerprinting.
-            </p>
-            <p>
-                This page is a work-in-progress.
-            </p>
-            <div id="resource-sets">
-            </div>
-            <inject type="script" src="scripts/resources.js">
-            </inject>
-            <script>
-                // Copyright (C) 2022 Ethan Uppal. All rights reserved.
-
-const resourceSetsDiv = document.getElementById('resource-sets');
-
-fetch('resources.json')
-    .then(response => response.text())
-    .then(data => {
-        const resources = JSON.parse(data).list;
-        loadWebsite(resources);
-        highlightResource();
-});
-
-function loadWebsite(resources) {
-    for (const resourceSet of resources) {
-        const resourceDiv = document.createElement('div');
-        resourceDiv.id = resourceSet.id;
-        resourceDiv.classList.add('resource-set');
-
-        const titleP = document.createElement('p');
-        titleP.classList.add('resource-title');
-        titleP.innerText = `${resourceSet.name}:`
-        resourceDiv.appendChild(titleP);
-
-        const linksUl = document.createElement('ul');
-        for (const link of resourceSet.links) {
-            const linkLi = document.createElement('li');
-            const linkA = document.createElement('a');
-            linkA.href = link.url;
-            linkA.innerText = 'name' in link ? link.name : link.url;
-            linkLi.appendChild(linkA);
-
-            if ('quote' in link) {
-                const quoteSpan = document.createElement('span');
-                quoteSpan.innerText = ` ("${link.quote}")`;
-                linkLi.appendChild(quoteSpan);
-            }
-
-            linksUl.appendChild(linkLi);
-        }
-        if ('terms' in resourceSet) {
-            const termsP = document.createElement('p');
-            termsP.innerText = 'Search terms: '
-            for (var i = 0; i < resourceSet.terms.length; i++) {
-                const termA = document.createElement('a');
-                if (i > 0) {
-                    const commaSpan = document.createElement('span');
-                    commaSpan.innerText = ', ';
-                    termsP.appendChild(commaSpan);
-                }
-                const term = resourceSet.terms[i];
-                termA.innerText = term;
-                termA.href = `https://duckduckgo.com/?q=${encodeURIComponent(term)}`;
-                termsP.appendChild(termA);
-            }
-            linksUl.appendChild(termsP);
-        }
-        resourceDiv.appendChild(linksUl);
-
-        resourceSetsDiv.appendChild(resourceDiv);
-    }
-}
-
-function highlightResource() {
-    const resourceSetID = getUrlParameter('learn');
-    if (resourceSetID) {
-        const resourceSet = document.getElementById(resourceSetID);
-        resourceSet.style.backgroundColor = '#FFFFCC';
-        resourceSet.scrollIntoView();
-    }
-}
-            </script>
             <noscript>
-                <p>I see you have JavaScript off. Although I applaud the decision, JavaScript needs to be enabled to load the resources.</p>
-                <p>Otherwise, you can look at the JSON source file <a href="resources.json" rel="nofollow">here</a>.</p>
-                <object data="resources.json">
-                    <iframe src="resources.json"></iframe>
-                </object>
+                <p>This page needs JavaScript to work, although I am sure that there are ways of doing private browsing mode detection without JavaScript.</p>
             </noscript>
+            <div class="script">
+                <p>
+                    Welcome
+                    <span class="type2">
+                        back
+                    </span>
+                    to Reveal's private browsing mode detection test!
+                    <span class="type1">
+                        Follow the instructions below to do the test.
+                    </span>
+                    <span class="type2">
+                        Here are your results:
+                    </span>
+                </p>
+                <div class="type1">
+                    <p>
+                        <strong>
+                            Instructions
+                        </strong>
+                    </p>
+                    <ol>
+                        <li>
+                            A token has been set in the browser's local storage.
+                        </li>
+                        <li>
+                            Open a new browser tab.
+                        </li>
+                        <li>
+                            Paste the following link into that tab:
+                            <span id="select-link" class="copy-link">
+                                https://ethanuppal.github.io/reveal/private.html?type=2
+                            </span>
+                            <br>
+                            (I'm sorry if you're on a mobile device.)
+                        </li>
+                        <li>
+                            Check there for the results.
+                        </li>
+                    </ol>
+                </div>
+                <div class="type2">
+                    <p>
+                        You
+                        <strong>
+                            are probably
+                            <span class="result">
+                            </span>
+                        </strong>
+                        in private browsing mode.
+                    </p>
+                    <ul>
+                        <li>
+                            Local storage
+                            <strong>
+                                was
+                                <span class="result">
+                                </span>
+                            </strong>
+                            cleared.
+                        </li>
+                    </ul>
+                    <h2>
+                        How does this work?
+                    </h2>
+                    <p>
+                        In private browsing mode, the browser sandboxes each tab. In other words, it tries to isolate every tab so that cookies and data stay separated.
+                    </p>
+                    <p>
+                        The previous page set a token in the browser local storage. If the token is no longer there for this new page, the browser must be sandboxing the tabs.
+                    </p>
+                </div>
+                <p class="hide1">
+                    <strong>
+                        It seems that the link you are coming from has been corrupted.
+                    </strong>
+                    Please go to
+                    <a href="https://ethanuppal.github.io/reveal/private.html">
+                        ethanuppal.github.io/reveal/private.html
+                    </a>
+                    .
+                </p>
+                <script>
+                    const type = getUrlParameter('type') ?? '1';
+                    showElements('script');
+                    showElements(`type${type}`);
+                    window.history.replaceState(null, "", `reveal/private.html?type=${type}`);
+
+                    switch (type) {
+                        case '1':
+                            localStorage.setItem('startedTest', 'true');
+                            localStorage.removeItem('testResult');
+                            break;
+                        case '2':
+                            if (localStorage.getItem('startedTest') == 'true' && localStorage.getItem('testResult') != 'private') {
+                                const resultSpans = document.getElementsByClassName('result');
+                                for (const resultSpan of resultSpans) {
+                                    resultSpan.innerText = ' not';
+                                }
+                                localStorage.setItem('testResult', 'general');
+                            } else {
+                                localStorage.setItem('testResult', 'private');
+                            }
+                            break;
+                        default:
+                            showElements('hide1');
+                            break;
+                    }
+                </script>
+            </div>
             <inject type="div" src="fragments/footer.html">
             </inject>
             <div>

@@ -8,7 +8,7 @@ scripts
 fragments
 _index.html
 _about.html
+_private.html
 Makefile
 build.js
 build.sh
-.gitignore

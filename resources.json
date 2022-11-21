@@ -62,6 +62,42 @@
             ]
         },
         {
+            "name": "Battery Level",
+            "id": "battery",
+            "links": [
+                {
+                    "name": "Battery Status API Reference",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Battery_Status_API"
+                }
+            ]
+        },
+        {
+            "name": "Cookies",
+            "id": "cookies",
+            "links": [
+                {
+                    "name": "Using HTTP cookies",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies"
+                }
+            ]
+        },
+        {
+            "name": "Plugins",
+            "id": "plugin",
+            "links": [
+                {
+                    "name": "Navigator.plugins Reference",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/plugins",
+                    "quote": "Deprecated: This feature is no longer recommended. Though some browsers might still support it, it may have already been removed from the relevant web standards"
+                },
+                {
+                    "name": "Navigator.pdfViewerEnabled Reference",
+                    "url": "https://developer.mozilla.org/en-US/docs/Web/API/Navigator/pdfViewerEnabled",
+                    "quote": "The pdfViewerEnabled property of the Navigator interface indicates whether the browser supports inline display of PDF files when navigating to them."
+                }
+            ]
+        },
+        {
             "name": "Threads",
             "id": "threads",
             "terms": ["computing thread", "cpu core", "multithreading", "parallel processing"],
