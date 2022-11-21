@@ -240,7 +240,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
                             Open a new browser tab in this window.
                         </li>
                         <li>
-                            Close all other tabs where you have Reveal open in this window.
+                            Close all other tabs in this window where you have Reveal open.
                         </li>
                         <li>
                             Paste the following link into that tab:
@@ -314,16 +314,19 @@ var getUrlParameter = function getUrlParameter(sParam) {
                             localStorage.removeItem('testResult');
                             break;
                         case '2':
-                            if (localStorage.getItem('startedTest') == 'true' && localStorage.getItem('testResult') != 'private') {
-                                const resultSpans = document.getElementsByClassName('result');
-                                for (const resultSpan of resultSpans) {
-                                    resultSpan.innerText = ' not';
-                                }
+                            if (localStorage.getItem('startedTest') == 'true') {
                                 localStorage.setItem('testResult', 'general');
                             } else {
                                 localStorage.setItem('testResult', 'private');
                             }
                             localStorage.removeItem('startedTest');
+
+                            if (localStorage.getItem('testResult') == 'general') {
+                                const resultSpans = document.getElementsByClassName('result');
+                                for (const resultSpan of resultSpans) {
+                                    resultSpan.innerText = ' not';
+                                }
+                            }
                             break;
                         default:
                             showElements('hide1');
