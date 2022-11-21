@@ -303,7 +303,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
                     </a>
                 </p>
                 <script>
-                    const type = getUrlParameter('type') ?? '1';
+                    const type = getUrlParameter('type') || '1';
                     showElements('script');
                     showElements(`type${type}`);
                     window.history.replaceState(null, "", `private.html?type=${type}`);
