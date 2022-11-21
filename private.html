@@ -297,7 +297,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
                     const type = getUrlParameter('type') ?? '1';
                     showElements('script');
                     showElements(`type${type}`);
-                    window.history.replaceState(null, "", `reveal/private.html?type=${type}`);
+                    window.history.replaceState(null, "", `private.html?type=${type}`);
 
                     switch (type) {
                         case '1':
@@ -314,6 +314,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
                             } else {
                                 localStorage.setItem('testResult', 'private');
                             }
+                            localStorage.removeItem('startedTest');
                             break;
                         default:
                             showElements('hide1');
