@@ -186,9 +186,14 @@ function showElements(className) {
         <script>
             // Copyright (C) 2022 Ethan Uppal. All rights reserved.
 
-function addBit(name, content, description, learnMore) {
+function addBit(name, content, description, learnMore, id) {
     const bitDiv = document.createElement('div');
     bitDiv.classList.add('bit');
+
+    const bitID = learnMore ?? id;
+    if (bitID) {
+        bitDiv.id = bitID;
+    }
 
     const nameP = document.createElement('p');
     nameP.classList.add('bit-name');
@@ -200,6 +205,10 @@ function addBit(name, content, description, learnMore) {
         contentElem = document.createElement('p');
         contentElem.classList.add('bit-content');
         contentElem.innerText = content.text;
+    } else if ('html' in content) {
+        contentElem = document.createElement('p');
+        contentElem.classList.add('bit-content');
+        contentElem.innerHTML = content.html;
     } else if ('error' in content) {
         contentElem = document.createElement('p');
         contentElem.classList.add('bit-content bit-error');
@@ -290,15 +299,25 @@ function addStaticBits() {
         {
             name: 'Browser Vendor',
             value: navigator.vendor,
-            description: "This attribute is set to be deprecated."
+            description: "This attribute is set to be deprecated.",
+            id: 'vendor'
         },
         {
             name: 'Platform',
-            value: navigator.platform
+            value: navigator.platform,
+            description: "This attribute is set to be deprecated.",
+            id: 'platform'
         },
         {
             name: 'Main Language',
-            value: navigator.language
+            value: navigator.language,
+            id: 'language'
+        },
+        {
+            name: 'Copy Pasting Vulnerability',
+            html: `<p>Try copying and <span style="position: absolute; left: -100px; top: -100px">HAHA IT IS I THE BRINGER OF DARKNESS!! </span>pasting this text somewhere.</p>`,
+            description: 'Not a browser vulnerability per se, but you might be surprised by what happens!',
+            learn: 'copypaste'
         },
         {
             name: 'User Agent',
@@ -317,13 +336,20 @@ function addStaticBits() {
                     default:
                         return 'Multitouch';
                 }
-            })()
+            })(),
+            id: 'touchscreen'
         },
         {
             name: 'Cookies Enabled?',
             value: (navigator.cookieEnabled > 0) ? 'Yes' : 'No',
             description: 'Cookies allow websites to store data on your computer to remember login sessions and track you.',
             learn: 'cookies'
+        },
+        {
+            name: 'Do Not Track?',
+            value: ('doNotTrack' in navigator) ? (navigator.doNotTrack == "1" ? 'Sent' : 'Not Sent') : 'Not Sent',
+            description: 'Browsers can request that a website does not track their user. Ironically, because only some browsers send this signal, it is used to track them!',
+            learn: 'dnt'
         },
         {
             name: 'Plugins',
@@ -339,6 +365,7 @@ function addStaticBits() {
         {
             name: 'Dimensions',
             value: `${screen.width} by ${screen.height}`,
+            id: 'dimensions'
         },
         {
             name: 'Threads',
@@ -347,8 +374,14 @@ function addStaticBits() {
             learn: 'threads'
         }
     ].forEach(bit => {
+        var content;
         if (bit.value) {
-            addBit(bit.name, { text: `${bit.value}` }, bit.description, bit.learn);
+            content = { text: `${bit.value}` };
+        } else if (bit.html) {
+            content = { html: bit.html };
+        }
+        if (content) {
+            addBit(bit.name, content, bit.description, bit.learn, bit.id);
         }
     });
 }

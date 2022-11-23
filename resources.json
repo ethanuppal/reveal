@@ -43,6 +43,16 @@
             ]
         },
         {
+            "name": "Copy Paste Vulnerability",
+            "id": "copypaste",
+            "links": [
+                {
+                    "name": "Copy-Paste from Website to Terminal by Jann",
+                    "url": "https://thejh.net/misc/website-terminal-copy-paste"
+                }
+            ]
+        },
+        {
             "name": "User Agent",
             "id": "ua",
             "links": [
@@ -78,6 +88,25 @@
                 {
                     "name": "Using HTTP cookies",
                     "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies"
+                }
+            ]
+        },
+        {
+            "name": "Do Not Track",
+            "id": "dnt",
+            "links": [
+                {
+                    "name": "Do Not Track by the Electronic Frontier Foundation (OUTDATED)",
+                    "url": "https://www.eff.org/issues/do-not-track"
+                },
+                {
+                    "name": "The \"Do Not Track\" Setting Doesn't Stop You from Being Tracked",
+                    "url": "https://spreadprivacy.com/do-not-track/"
+                },
+                {
+                    "name": "Apple's Safari 12.1 Release Notes",
+                    "url": "https://developer.apple.com/documentation/safari-release-notes/safari-12_1-release-notes",
+                    "quote": "Removed support for the expired Do Not Track standard to prevent potential use as a fingerprinting variable."
                 }
             ]
         },
