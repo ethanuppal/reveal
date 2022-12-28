@@ -283,7 +283,7 @@ function addOtherBits() {
         navigator.getBattery().then((battery) => {
             addBit(
                 'Battery Percent',
-                { text: `${battery.level} (${battery.charging ? 'plugged in' : 'not plugged in'})`},
+                { text: `${Math.round(battery.level * 100)}% (${battery.charging ? 'plugged in' : 'not plugged in'})`},
                 'battery'
             );
         }).finally(() => {
